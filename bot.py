@@ -5,10 +5,9 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppI
 from telegram.ext import Application, CommandHandler, ContextTypes
 
 # ----------------------
-# Environment Variables
+# Configuration
 # ----------------------
-TOKEN = "8299233960:AAEn9hKdSr9S1eP0bry39tqAxywKlhOkwYA"
-  # Telegram Bot Token from Railway Environment
+TOKEN = "8299233960:AAEn9hKdSr9S1eP0bry39tqAxywKlhOkwYA"  # Telegram Bot Token (hardcoded for now)
 WEBAPP_URL = "https://gemeking.github.io/cryptotracker/"
 EXCHANGE_API_URL = "https://api.exchangerate-api.com/v4/latest/ETB?access_key=9b2b2dfba35e59129f2de9c4a5651e74&symbols=USD,EUR,GBP"
 
@@ -21,8 +20,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = requests.get(EXCHANGE_API_URL, timeout=10)
         data = response.json()
         rates = data.get("rates", {})
+
         if rates:
-            # Convert to format: 1 USD = XXX ETB
+            # Convert rates to 1 USD/EUR/GBP = XXX ETB
             usd_to_etb = round(1 / rates.get("USD", 0.0), 2)
             eur_to_etb = round(1 / rates.get("EUR", 0.0), 2)
             gbp_to_etb = round(1 / rates.get("GBP", 0.0), 2)
@@ -55,6 +55,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Main Bot Runner
 # ----------------------
 async def main():
+    # Build the bot application
     application = Application.builder().token(TOKEN).build()
     application.add_handler(CommandHandler("start", start))
 
@@ -68,7 +69,7 @@ async def main():
     # Keep running until manually stopped
     await asyncio.Event().wait()
 
-    # Shutdown properly
+    # Proper shutdown
     await application.updater.stop()
     await application.stop()
     await application.shutdown()
@@ -87,4 +88,3 @@ if __name__ == "__main__":
     finally:
         loop.run_until_complete(loop.shutdown_asyncgens())
         loop.close()
-
