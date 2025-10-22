@@ -7,7 +7,8 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 # ----------------------
 # Environment Variables
 # ----------------------
-TOKEN = os.environ.get("TOKEN")  # Telegram Bot Token from Railway Environment
+TOKEN = "8299233960:AAEn9hKdSr9S1eP0bry39tqAxywKlhOkwYA"
+  # Telegram Bot Token from Railway Environment
 WEBAPP_URL = "https://gemeking.github.io/cryptotracker/"
 EXCHANGE_API_URL = "https://api.exchangerate-api.com/v4/latest/ETB?access_key=9b2b2dfba35e59129f2de9c4a5651e74&symbols=USD,EUR,GBP"
 
@@ -86,3 +87,4 @@ if __name__ == "__main__":
     finally:
         loop.run_until_complete(loop.shutdown_asyncgens())
         loop.close()
+
